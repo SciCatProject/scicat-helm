@@ -1,0 +1,18 @@
+[
+  {
+    "type": "DefaultLogger",
+    "modulePath": "./loggingProviders/defaultLogger",
+    "config": {}
+  },
+  {
+    "type": "GrayLogger",
+    "modulePath": "./loggingProviders/grayLogger",
+    "config": {
+      "facility": "Local-Test",
+      "environment": "development",
+      "server": "graylog.io",
+      "service": "scicat-backend",
+      "port": 9999
+    }
+  }
+]

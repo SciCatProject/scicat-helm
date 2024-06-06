@@ -1,0 +1,9 @@
+dependencies:
+- name: scicat-backend
+  repository: file://../backend
+  version: 0.1.0
+- name: scicat-frontend
+  repository: file://../frontend
+  version: 0.1.0
+digest: sha256:50592f9246acb1c4a59e808fa22e228b84d4f789f7105c6de4302f57b69d8c1e
+generated: "2024-06-06T12:11:42.069893+02:00"

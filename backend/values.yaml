@@ -1,0 +1,65 @@
+# Default values for scicat-backend.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+appEnv: ""
+
+image:
+  repository: ghcr.io/scicatproject/backend-next
+  tag: latest
+  pullPolicy: Always
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podSecurityContext: {}
+
+securityContext: {}
+
+hostAliases: []
+
+livenessProbe:
+  httpGet:
+    path: /explorer
+    port: http
+readinessProbe:
+  httpGet:
+    path: /explorer
+    port: http
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "16m"
+    nginx.org/client-max-body-size: "16m"
+  hosts:
+  - host: localhost
+    paths:
+    - path: /api
+      pathType: ImplementationSpecific
+    - path: /explorer
+      pathType: ImplementationSpecific
+  tls: []
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

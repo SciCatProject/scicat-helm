@@ -1,0 +1,34 @@
+scicat-backend:
+  appEnv: development
+  image:
+    repository: ghcr.io/scicatproject/backend-next
+    tag: latest
+    pullPolicy: IfNotPresent
+  ingress:
+    enabled: true
+    hosts:
+    - host: localhost
+      paths:
+      - path: /api
+        pathType: ImplementationSpecific
+      - path: /explorer
+        pathType: ImplementationSpecific
+
+scicat-frontend:
+  appEnv: development
+  image:
+    repository: ghcr.io/scicatproject/frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+  ingress:
+    enabled: true
+    hosts:
+    - host: localhost
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+
+
+
+
+
