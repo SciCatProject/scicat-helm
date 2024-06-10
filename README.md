@@ -48,7 +48,8 @@ After successfully starting the tunnel, you can access the application at `http:
 minikube tunnel
 ```
 
-## Additional 
+## Customization and additional useful commands. 
+
 ### Customize Ingress Host 
 Alternatively, you can customize the ingress host and modify your `/etc/hosts` file accordingly. By default, the ingress host is set to `localhost`.
 ingress config can be found in the `scicat-app/values.dev.yaml`
