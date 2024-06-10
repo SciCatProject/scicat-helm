@@ -1,5 +1,6 @@
 scicat-backend:
   appEnv: development
+  enableInitcontainer: true
   image:
     repository: ghcr.io/scicatproject/backend-next
     tag: latest
@@ -17,12 +18,13 @@ scicat-backend:
     EXPRESS_SESSION_SECRET: "secret"
     JWT_SECRET: random
     JWT_EXPIRES_IN: "3600"
-    MONGODB_URI: "mongodb://host.minikube.internal/scicat-backend-dev-next"
+    # MONGODB_URI: "mongodb://host.minikube.internal/scicat-backend-dev-next"
+    MONGODB_URI: "mongodb://scicat-app-scicat-mongodb/scicat-backend-dev-next"
     PORT: "3000"
     SITE: LOCAL
     LOGBOOK_ENABLED: "no"
     ELASTICSEARCH_ENABLED: "yes"
-    ES_HOST: http://scicat-app-dev-scicat-elastic-search:9200
+    ES_HOST: http://scicat-app-scicat-elastic-search:9200
     ES_USERNAME: elastic
     MONGODB_COLLECTION: Dataset
     ES_MAX_RESULT: "210000"
@@ -42,7 +44,7 @@ scicat-backend:
   - name: ES_PASSWORD
     valueFrom:
       secretKeyRef:
-        name: scicat-app-dev-scicat-elastic-search-secret
+        name: scicat-app-scicat-elastic-search-secret
         key: ELASTIC_PASSWORD
 
 scicat-frontend:
@@ -58,6 +60,16 @@ scicat-frontend:
       paths:
       - path: /
         pathType: ImplementationSpecific
+
+scicat-mongodb:
+  appEnv: development
+  autoscaling:
+    enabled: false
+  secret:
+    MONGODB_URI: ""
+  persistentVolume:
+    enabled: false
+    storageClassName: ""
 
 scicat-elastic-search:
   appEnv: development
@@ -75,7 +87,7 @@ scicat-elastic-search:
     ES_JAVA_OPTS: "-Xms2g -Xmx2g"
   secret:
     ELASTIC_PASSWORD: ZmFrZVBhc3N3b3Jk
-  peristentVolume:
+  persistentVolume:
     enabled: false
     storageClassName: nfs-storage
     size: 10Gi

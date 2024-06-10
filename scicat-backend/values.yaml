@@ -2,6 +2,8 @@ replicaCount: 1
 
 appEnv: ""
 
+enableInitcontainer: true
+
 image:
   repository: ghcr.io/scicatproject/backend-next
   tag: latest
@@ -77,7 +79,7 @@ env:
 - name: ES_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: scicat-app-dev-scicat-elastic-search-secret
+      name: scicat-app-scicat-elastic-search-secret
       key: ELASTIC_PASSWORD
 
 resources: {}

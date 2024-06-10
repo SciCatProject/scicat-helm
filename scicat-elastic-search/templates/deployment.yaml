@@ -40,6 +40,9 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+
+          ## The following script checks if the Elasticsearch service is available, 
+          ## with the correct credentials and if the service is returning a 200 status code (which means it's up and running)
           readinessProbe:
             exec:
               command:
@@ -71,8 +74,8 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.persistentVolume.enabled }}
           volumeMounts:
-            - mountPath: /usr/share/elasticsearch/data
-              name: scicat-elastic-search
+            - name: scicat-elastic-search
+              mountPath: /usr/share/elasticsearch/data
           {{- end }}
       {{- if .Values.persistentVolume.enabled }}
       volumes:

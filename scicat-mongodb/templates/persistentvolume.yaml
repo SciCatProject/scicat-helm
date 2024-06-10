@@ -1,11 +1,11 @@
 {{- if .Values.persistentVolume.enabled | default false }}
-kind: PersistentVolume
 apiVersion: v1
+kind: PersistentVolume
 metadata:
-  name: {{ include "scicat-elastic-search.fullname" . }}-pv
+  name: {{ include "scicat-mongodb.fullname" . }}-pv
   labels:
-    {{- include "scicat-elastic-search.labels" . | nindent 4 }}
-    app: {{ include "scicat-elastic-search.fullname" . }}
+    {{- include "scicat-mongodb.labels" . | nindent 4 }}
+    app: {{ include "scicat-mongodb.fullname" . }}
 spec:
   capacity:
     storage: {{ .Values.persistentVolume.size }} 
@@ -16,6 +16,6 @@ spec:
   storageClassName: {{ .Values.persistentVolume.storageClassName }}
   {{- if .Values.persistentVolume.volume.nfs }}
   nfs:
-    {{- toYaml .Values.persistentVolume.volume.nfs | nindent 4 }}
+    {{- toYaml .Values.persistentVolume.nfs | nindent 4 }}
   {{- end }}
 {{- end }}

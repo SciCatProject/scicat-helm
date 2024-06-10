@@ -27,6 +27,30 @@ spec:
       serviceAccountName: {{ template "scicat-backend.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if and (eq .Values.configmap.ELASTICSEARCH_ENABLED "yes") .Values.enableInitcontainer }}
+      initContainers:
+        - name: wait-for-elastic-search
+          image: busybox
+          env:
+            - name: ES_HOST
+              value: {{ .Values.configmap.ES_HOST | replace "http://" "" | replace ":9200" "" }}
+
+          ## The following script checks if the Elasticsearch service is available,
+          ## and if the service is returning a 401 status code (which means it's up and running)
+          command:
+            - sh
+            - -c
+            - |
+              NAMESPACE=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace);
+              HOST="$ES_HOST.$NAMESPACE.svc.cluster.local"
+              until nslookup $HOST > /dev/null 2>&1 && \
+                    wget --server-response -qO- http://$HOST:9200/_cluster/health 2>&1 | grep ' 401 '; 
+              do
+                echo "Waiting for Elasticsearch to be available...";
+                sleep 5;
+              done;
+              echo "Elasticsearch is ready.";
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:

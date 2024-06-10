@@ -1,0 +1,19 @@
+{{- if .Values.persistentVolume.enabled | default false }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "scicat-mongodb.fullname" . }}-pvc
+  labels:
+    {{- include "scicat-mongodb.labels" . | nindent 4 }}
+    app: {{ include "scicat-mongodb.fullname" . }}
+spec:
+  storageClassName: {{ .Values.persistentVolume.storageClassName }}
+  selector:
+    matchLabels:
+      app: {{ include "scicat-mongodb.fullname" . }}
+  accessModes:
+    {{- toYaml .Values.persistentVolume.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolume.size }}
+{{- end }}
