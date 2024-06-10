@@ -1,0 +1,21 @@
+{{- if .Values.persistentVolume.enabled | default false }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "mongodb.fullname" . }}-pv
+  labels:
+    {{- include "mongodb.labels" . | nindent 4 }}
+    app: {{ include "mongodb.fullname" . }}
+spec:
+  capacity:
+    storage: {{ .Values.persistentVolume.size }} 
+  volumeMode: Filesystem
+  accessModes:
+    {{- toYaml .Values.persistentVolume.accessModes | nindent 4 }}
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ .Values.persistentVolume.storageClassName }}
+  {{- if .Values.persistentVolume.volume.nfs }}
+  nfs:
+    {{- toYaml .Values.persistentVolume.nfs | nindent 4 }}
+  {{- end }}
+{{- end }}

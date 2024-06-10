@@ -1,4 +1,4 @@
-scicat-backend:
+backend:
   appEnv: development
   enableInitcontainer: true
   image:
@@ -18,13 +18,12 @@ scicat-backend:
     EXPRESS_SESSION_SECRET: "secret"
     JWT_SECRET: random
     JWT_EXPIRES_IN: "3600"
-    # MONGODB_URI: "mongodb://host.minikube.internal/scicat-backend-dev-next"
-    MONGODB_URI: "mongodb://scicat-app-scicat-mongodb/scicat-backend-dev-next"
+    MONGODB_URI: "mongodb://scicat-app-mongodb/scicat-db"
     PORT: "3000"
     SITE: LOCAL
     LOGBOOK_ENABLED: "no"
     ELASTICSEARCH_ENABLED: "yes"
-    ES_HOST: http://scicat-app-scicat-elastic-search:9200
+    ES_HOST: http://scicat-app-elastic-search:9200
     ES_USERNAME: elastic
     MONGODB_COLLECTION: Dataset
     ES_MAX_RESULT: "210000"
@@ -44,10 +43,10 @@ scicat-backend:
   - name: ES_PASSWORD
     valueFrom:
       secretKeyRef:
-        name: scicat-app-scicat-elastic-search-secret
+        name: scicat-app-elastic-search-secret
         key: ELASTIC_PASSWORD
 
-scicat-frontend:
+frontend:
   appEnv: development
   image:
     repository: ghcr.io/scicatproject/frontend
@@ -61,7 +60,7 @@ scicat-frontend:
       - path: /
         pathType: ImplementationSpecific
 
-scicat-mongodb:
+mongodb:
   appEnv: development
   autoscaling:
     enabled: false
@@ -71,7 +70,7 @@ scicat-mongodb:
     enabled: false
     storageClassName: ""
 
-scicat-elastic-search:
+elastic-search:
   appEnv: development
   image:
     repository: docker.elastic.co/elasticsearch/elasticsearch

@@ -24,16 +24,16 @@ version: 0.1.0
 appVersion: "1.0.0"
 
 dependencies:
-- name: scicat-frontend
+- name: frontend
   version: 0.1.0
-  repository: "file://../scicat-frontend"
-- name: scicat-elastic-search
+  repository: "file://../frontend"
+- name: elastic-search
   version: 0.1.0
-  repository: "file://../scicat-elastic-search"
-- name: scicat-mongodb
+  repository: "file://../elastic-search"
+- name: mongodb
   version: 0.1.0
-  repository: "file://../scicat-mongodb"
-- name: scicat-backend
+  repository: "file://../mongodb"
+- name: backend
   version: 0.1.0
-  repository: "file://../scicat-backend"
+  repository: "file://../backend"
 

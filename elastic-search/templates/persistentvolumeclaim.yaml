@@ -1,0 +1,18 @@
+{{- if .Values.persistentVolume.enabled | default false }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "elastic-search.fullname" . }}-pvc
+  labels:
+    {{- include "elastic-search.labels" . | nindent 4 }}
+spec:
+  storageClassName: {{ .Values.persistentVolume.storageClassName }}
+  selector:
+    matchLabels:
+      app: {{ include "elastic-search.fullname" . }}
+  accessModes:
+    {{- toYaml .Values.persistentVolume.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolume.size }} 
+{{- end }}

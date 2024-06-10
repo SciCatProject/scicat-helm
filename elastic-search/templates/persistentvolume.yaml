@@ -1,0 +1,21 @@
+{{- if .Values.persistentVolume.enabled | default false }}
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: {{ include "elastic-search.fullname" . }}-pv
+  labels:
+    {{- include "elastic-search.labels" . | nindent 4 }}
+    app: {{ include "elastic-search.fullname" . }}
+spec:
+  capacity:
+    storage: {{ .Values.persistentVolume.size }} 
+  volumeMode: Filesystem
+  accessModes:
+    {{- toYaml .Values.persistentVolume.accessModes | nindent 4 }}
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ .Values.persistentVolume.storageClassName }}
+  {{- if .Values.persistentVolume.volume.nfs }}
+  nfs:
+    {{- toYaml .Values.persistentVolume.volume.nfs | nindent 4 }}
+  {{- end }}
+{{- end }}
