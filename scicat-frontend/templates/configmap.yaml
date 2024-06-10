@@ -9,7 +9,6 @@ data:
 {{ .Files.Get "envfiles/theme.json" | indent 4 }}
   config.json: |-
 {{ .Files.Get "envfiles/config.dev.json" | indent 4 }}
-
 binaryData:
   favicon.ico: |-
 {{ .Files.Get "envfiles/favicon.ico" | b64enc | indent 4 }}

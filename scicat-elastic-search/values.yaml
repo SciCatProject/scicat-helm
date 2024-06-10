@@ -1,0 +1,80 @@
+replicaCount: 1
+
+appEnv: ""
+
+image:
+  repository: docker.elastic.co/elasticsearch/elasticsearch
+  tag: 8.8.2
+  pullPolicy: Always
+
+imagePullSecrets: []
+
+nameOverride: ''
+fullnameOverride: ''
+
+persistentVolume:
+  enabled: false
+
+ingress:
+  enabled: false
+
+serviceAccount:
+  create: false
+  name:
+
+podSecurityContext: {}
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  capabilities:
+    add:
+    - IPC_LOCK
+    - SYS_RESOURCE
+
+
+esJavaOpts: '-Xmx2g -Xms2g'
+terminationGracePeriod: 120
+sysctlVmMaxMapCount: 262144
+
+service:
+  type: ClusterIP
+  port: 9200
+
+resources:
+  requests:
+    cpu: '100m'
+    memory: '4Gi'
+  limits:
+    cpu: '1000m'
+    memory: 4Gi
+
+readinessProbe:
+  failureThreshold: 3
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 3
+  timeoutSeconds: 5
+
+clusterHealthCheckParams: 'wait_for_status=green&timeout=1s'
+
+configmap:
+  node.name: ''
+  ES_JAVA_OPTS: ''
+  cluster.name: ''
+  bootstrap.memory_lock: ''
+  discovery.type: ''
+  xpack.security.enabled: 'true'
+  xpack.security.http.ssl.enabled: 'false'
+secret:
+  ELASTIC_PASSWORD: ''
+env:
+- name: ELASTIC_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: scicat-app-dev-scicat-elastic-search-secret
+      key: ELASTIC_PASSWORD
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

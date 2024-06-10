@@ -4,8 +4,9 @@ metadata:
   name: {{ include "scicat-backend.fullname" . }}-configmap
   labels:  {{ include "scicat-backend.labels" . | nindent 4 }}
 data:
-  .env: |-
-{{ .Files.Get "envfiles/.env.dev" | indent 4 }}
+  {{- with .Values.configmap }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
   functionalAccounts.json: |-
 {{ .Files.Get "envfiles/functionalAccounts.dev.json" | indent 4 }}
   loggers.json: |-
@@ -14,4 +15,3 @@ data:
 {{ .Files.Get "envfiles/frontend.config.dev.json" | indent 4 }}
   frontend.theme.json: |-
 {{ .Files.Get "envfiles/frontend.theme.dev.json" | indent 4 }}
-

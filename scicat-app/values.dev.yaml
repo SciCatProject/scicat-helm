@@ -13,6 +13,37 @@ scicat-backend:
         pathType: ImplementationSpecific
       - path: /explorer
         pathType: ImplementationSpecific
+  configmap:
+    EXPRESS_SESSION_SECRET: "secret"
+    JWT_SECRET: random
+    JWT_EXPIRES_IN: "3600"
+    MONGODB_URI: "mongodb://host.minikube.internal/scicat-backend-dev-next"
+    PORT: "3000"
+    SITE: LOCAL
+    LOGBOOK_ENABLED: "no"
+    ELASTICSEARCH_ENABLED: "yes"
+    ES_HOST: http://scicat-app-dev-scicat-elastic-search:9200
+    ES_USERNAME: elastic
+    MONGODB_COLLECTION: Dataset
+    ES_MAX_RESULT: "210000"
+    ES_FIELDS_LIMIT: "400000"
+    ES_INDEX: "dataset"
+    ES_REFRESH: "wait_for"
+    ACCESS_GROUPS_STATIC_VALUES: ""
+    ADMIN_GROUPS: "admin, ingestor"
+    CREATE_DATASET_GROUPS: ""
+    CREATE_DATASET_WITH_PID_GROUPS: ""
+    DELETE_GROUPS: "archivemanager"
+    DATASET_CREATION_VALIDATION_ENABLED: "false"
+    DATASET_CREATION_VALIDATION_REGEX: ""
+    PROPOSAL_GROUPS: "proposalingestor"
+    SAMPLE_GROUPS: ""
+  env:
+  - name: ES_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: scicat-app-dev-scicat-elastic-search-secret
+        key: ELASTIC_PASSWORD
 
 scicat-frontend:
   appEnv: development
@@ -28,7 +59,39 @@ scicat-frontend:
       - path: /
         pathType: ImplementationSpecific
 
-
-
+scicat-elastic-search:
+  appEnv: development
+  image:
+    repository: docker.elastic.co/elasticsearch/elasticsearch
+    tag: 8.8.2
+    pullPolicy: Always
+  configmap:
+    node.name: "es01"
+    cluster.name: "es-cluster"
+    bootstrap.memory_lock: "true"
+    discovery.type: "single-node"
+    xpack.security.enabled: 'true'
+    xpack.security.http.ssl.enabled: 'false'
+    ES_JAVA_OPTS: "-Xms2g -Xmx2g"
+  secret:
+    ELASTIC_PASSWORD: ZmFrZVBhc3N3b3Jk
+  peristentVolume:
+    enabled: false
+    storageClassName: nfs-storage
+    size: 10Gi
+    accessModes:
+    - ReadWriteMany
+  requests:
+    cpu: '100m'
+    memory: '4Gi'
+  limits:
+    cpu: '1000m'
+    memory: 4Gi
+  readinessProbe:
+    failureThreshold: 3
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    successThreshold: 3
+    timeoutSeconds: 5
 
 

@@ -1,0 +1,7 @@
+[
+  {
+    "type": "DefaultLogger",
+    "modulePath": "./loggingProviders/defaultLogger",
+    "config": {}
+  }
+]

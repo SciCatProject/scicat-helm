@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "scicat-elastic-search.fullname" . }}
+  labels: 
+    {{ include "scicat-elastic-search.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "scicat-elastic-search.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "scicat-elastic-search.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ template "scicat-elastic-search.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.env | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "scicat-elastic-search.fullname" . }}-configmap
+            - secretRef:
+                name: {{ include "scicat-elastic-search.fullname" . }}-secret
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - |
+                if [ -z "${ELASTIC_PASSWORD}" ]; then
+                    echo "ELASTIC_PASSWORD variable is missing, exiting"
+                    exit 1
+                fi
+
+                http() {
+                    local path="${1}"
+                    HTTP_CODE=$(curl --output /dev/null -k -s -w "%{http_code}" -u "elastic:${ELASTIC_PASSWORD}" "http://localhost:9200${path}")
+                    echo ${HTTP_CODE}
+                }
+
+                HTTP_STATUS=$(http "/_cluster/health")
+
+                if [ "${HTTP_STATUS}" = "200" ]; then
+                    echo "Elasticsearch is healthy"
+                    exit 0
+                else
+                    echo "Elasticsearch is not ready, HTTP code: ${HTTP_STATUS}"
+                    exit 1
+                fi
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.persistentVolume.enabled }}
+          volumeMounts:
+            - mountPath: /usr/share/elasticsearch/data
+              name: scicat-elastic-search
+          {{- end }}
+      {{- if .Values.persistentVolume.enabled }}
+      volumes:
+        - name: scicat-elastic-search
+          persistentVolumeClaim:
+            claimName: {{ include "scicat-elastic-search.fullname" . }}-pvc 
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -1,9 +1,12 @@
 dependencies:
-- name: scicat-backend
-  repository: file://../backend
-  version: 0.1.0
 - name: scicat-frontend
-  repository: file://../frontend
+  repository: file://../scicat-frontend
   version: 0.1.0
-digest: sha256:50592f9246acb1c4a59e808fa22e228b84d4f789f7105c6de4302f57b69d8c1e
-generated: "2024-06-06T12:11:42.069893+02:00"
+- name: scicat-elastic-search
+  repository: file://../scicat-elastic-search
+  version: 0.1.0
+- name: scicat-backend
+  repository: file://../scicat-backend
+  version: 0.1.0
+digest: sha256:726c45f2b42fd6c26b6c070f44bc6fbe6e1479db61a0676e024dae514d3a227c
+generated: "2024-06-10T10:59:36.967123+02:00"

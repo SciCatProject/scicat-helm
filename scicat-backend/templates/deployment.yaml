@@ -33,6 +33,11 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.env | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "scicat-backend.fullname" . }}-configmap
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -44,9 +49,6 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts: 
-            - name: config-volume
-              mountPath: /home/node/app/.env
-              subPath: .env
             - name: config-volume
               mountPath: /home/node/app/functionalAccounts.json
               subPath: functionalAccounts.json
