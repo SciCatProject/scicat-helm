@@ -61,7 +61,6 @@ helm upgrade scicat-app scicat-app --namespace scicat-dev -f scicat-app/values.d
 ### Uninstall Release
 ```
 helm uninstall scicat-app --namespace scicat-dev
-
 ```
 
 ## Notes:
