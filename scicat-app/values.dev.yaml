@@ -21,8 +21,7 @@ backend:
     MONGODB_URI: "mongodb://scicat-app-mongodb/scicat-db"
     PORT: "3000"
     SITE: LOCAL
-    LOGBOOK_ENABLED: "yes"
-    LOGBOOK_BASE_URL: "http://scicat-app-scichat-loopback/scichatapi"
+    LOGBOOK_ENABLED: "no"
     ELASTICSEARCH_ENABLED: "yes"
     ES_HOST: http://scicat-app-elastic-search:9200
     ES_USERNAME: elastic
