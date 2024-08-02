@@ -3,8 +3,8 @@ backend:
   enableInitcontainer: true
   image:
     repository: ghcr.io/scicatproject/backend-next
-    tag: latest
-    pullPolicy: IfNotPresent
+    tag: v4.5.1
+    pullPolicy: Always
   ingress:
     enabled: true
     hosts:
@@ -31,6 +31,7 @@ backend:
     ES_INDEX: "dataset"
     ES_REFRESH: "wait_for"
     ACCESS_GROUPS_STATIC_VALUES: ""
+    ACCESS_GROUPS_OIDCPAYLOAD_ENABLED: false
     ADMIN_GROUPS: "admin, ingestor"
     CREATE_DATASET_GROUPS: ""
     CREATE_DATASET_WITH_PID_GROUPS: ""
@@ -39,6 +40,13 @@ backend:
     DATASET_CREATION_VALIDATION_REGEX: ""
     PROPOSAL_GROUPS: "proposalingestor"
     SAMPLE_GROUPS: ""
+    OIDC_ISSUER: ""
+    OIDC_AUTHORIZATION_URL: ""
+    OIDC_CLIENT_ID: ""
+    OIDC_CLIENT_SECRET: ""
+    OIDC_CALLBACK_URL: ""
+    OIDC_SCOPE: 'openid profile email'
+    OIDC_SUCCESS_URL: ""
   env:
   - name: ES_PASSWORD
     valueFrom:
@@ -50,8 +58,8 @@ frontend:
   appEnv: development
   image:
     repository: ghcr.io/scicatproject/frontend
-    tag: latest
-    pullPolicy: IfNotPresent
+    tag: v.4.4.2
+    pullPolicy: Always
   ingress:
     enabled: true
     hosts:
@@ -104,5 +112,3 @@ elastic-search:
     periodSeconds: 10
     successThreshold: 3
     timeoutSeconds: 5
-
-

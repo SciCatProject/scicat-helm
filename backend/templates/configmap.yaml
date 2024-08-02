@@ -8,10 +8,10 @@ data:
   {{- toYaml . | nindent 2 }}
   {{- end }}
   functionalAccounts.json: |-
-{{ .Files.Get "envfiles/functionalAccounts.dev.json" | indent 4 }}
+{{ .Files.Get "envfiles/functionalAccounts.json" | indent 4 }}
   loggers.json: |-
-{{ .Files.Get "envfiles/loggers.dev.json" | indent 4 }}
+{{ .Files.Get "envfiles/loggers.json" | indent 4 }}
   frontend.config.json: |-
-{{ .Files.Get "envfiles/frontend.config.dev.json" | indent 4 }}
+{{ .Files.Get "envfiles/frontend.config.json" | indent 4 }}
   frontend.theme.json: |-
-{{ .Files.Get "envfiles/frontend.theme.dev.json" | indent 4 }}
+{{ .Files.Get "envfiles/frontend.theme.json" | indent 4 }}
