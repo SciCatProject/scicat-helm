@@ -3,7 +3,7 @@ backend:
   enableInitcontainer: true
   image:
     repository: ghcr.io/scicatproject/backend-next
-    tag: v4.5.1
+    tag: latest
     pullPolicy: Always
   ingress:
     enabled: true
@@ -16,22 +16,22 @@ backend:
         pathType: ImplementationSpecific
   configmap:
     EXPRESS_SESSION_SECRET: "secret"
-    JWT_SECRET: random
+    JWT_SECRET: "random"
     JWT_EXPIRES_IN: "3600"
     MONGODB_URI: "mongodb://scicat-app-mongodb/scicat-db"
     PORT: "3000"
-    SITE: LOCAL
+    SITE: "LOCAL"
     LOGBOOK_ENABLED: "no"
     ELASTICSEARCH_ENABLED: "yes"
-    ES_HOST: http://scicat-app-elastic-search:9200
-    ES_USERNAME: elastic
-    MONGODB_COLLECTION: Dataset
+    ES_HOST: "http://scicat-app-elastic-search:9200"
+    ES_USERNAME: "elastic"
+    MONGODB_COLLECTION: "Dataset"
     ES_MAX_RESULT: "210000"
     ES_FIELDS_LIMIT: "400000"
     ES_INDEX: "dataset"
     ES_REFRESH: "wait_for"
     ACCESS_GROUPS_STATIC_VALUES: ""
-    ACCESS_GROUPS_OIDCPAYLOAD_ENABLED: false
+    ACCESS_GROUPS_OIDCPAYLOAD_ENABLED: "false"
     ADMIN_GROUPS: "admin, ingestor"
     CREATE_DATASET_GROUPS: ""
     CREATE_DATASET_WITH_PID_GROUPS: ""

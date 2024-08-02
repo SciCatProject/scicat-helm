@@ -29,7 +29,7 @@ Navigate to the `scicat-helm` root directory and install the Helm chart using th
 [Helm Install Doc ](https://helm.sh/docs/helm/helm_install/)
 
 ```
-helm install scicat-app scicat-app --namespace scicat-dev --create-namespace -f scicat-app/values.dev.yaml > scicat-app/app.yaml
+helm install scicat-app scicat-app --namespace scicat-dev --create-namespace -f scicat-app/values.yaml > scicat-app/app.yaml
 ```
 
 ## Verify Installation:
@@ -42,23 +42,25 @@ helm status scicat-app --namespace scicat-dev
 
 ## Expose pod to localhost
 
-After successfully starting the tunnel, you can access the application at `http://localhost`.
+After successfully starting the tunnel, you can access the application at `http://localhost`
 
 ```
 minikube tunnel
 ```
+
+NOTE: ingress needs to be enabled.
 
 # Customization and additional useful commands.
 
 ## Customize Ingress Host
 
 Alternatively, you can customize the ingress host and modify your `/etc/hosts` file accordingly. By default, the ingress host is set to `localhost`.
-ingress config can be found in the `scicat-app/values.dev.yaml`
+ingress config can be found in the `scicat-app/values.yaml`
 
 ## Upgrade Release
 
 ```
-helm upgrade scicat-app scicat-app --namespace scicat-dev -f scicat-app/values.dev.yaml
+helm upgrade scicat-app scicat-app --namespace scicat-dev -f scicat-app/values.yaml
 ```
 
 ## Uninstall Release
@@ -69,6 +71,6 @@ helm uninstall scicat-app --namespace scicat-dev
 
 # Notes:
 
-Modify the `values.dev.yaml` file with your desired settings.
+Modify the `values.yaml` file with your desired settings.
 The charts directory and Chart.lock file are ignored in version control as specified in the .gitignore file.
 By following these steps, you should be able to run scicat-app locally with Minikube.
