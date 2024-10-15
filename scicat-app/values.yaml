@@ -58,7 +58,7 @@ frontend:
   appEnv: development
   image:
     repository: ghcr.io/scicatproject/frontend
-    tag: v.4.4.2
+    tag: latest
     pullPolicy: Always
   ingress:
     enabled: true
